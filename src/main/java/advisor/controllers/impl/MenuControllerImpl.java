@@ -18,7 +18,8 @@ import java.net.http.HttpRequest;
 
 public class MenuControllerImpl implements IMenuController {
     private static final int ONE = 1;
-    private static final int ZERO = 0;
+    private static final int FIRST_INPUT_VALUE = 0;
+    private static final int SECOND_INPUT_VALUE = 1;
     
     private final IAuthorizationService authService = new AuthorizationServiceImpl();
     private final IAlbumService albumService = new AlbumServiceImpl();
@@ -30,15 +31,17 @@ public class MenuControllerImpl implements IMenuController {
         boolean exit = false;
         while (!exit) {
             String[] choice = InputScanner.getStringInput();
-            switch (choice[ZERO]) {
+            switch (choice[FIRST_INPUT_VALUE]) {
                 case "auth":
-                    if (authorizeApplication()) {
-                        showMainMenu();
+                    try {
+                        authenticateApp();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+                    showMainMenu();
                     break;
                 case "exit":
                     showGoodbyeMessage();
-                    System.exit(0);
                     break;
                 default:
                     System.out.println(ConsoleOutput.PROVIDE_ACCESS);
@@ -47,10 +50,18 @@ public class MenuControllerImpl implements IMenuController {
     }
 
     @Override
+    public void authenticateApp() throws IOException {
+        authService.printAuthURL();
+        String authCode = authService.getAuthCode(LocalhostServer.initAndStart());
+        HttpRequest authRequest = authService.createAuthReq(authCode);
+        String accessToken = authService.getAccessToken(authRequest);
+    }
+
+    @Override
     public void showMainMenu() {
         while(true) {
             String[] choice = InputScanner.getStringInput();
-            switch (choice[ZERO]) {
+            switch (choice[FIRST_INPUT_VALUE]) {
                 case "new":
                     showNewReleases();
                     break;
@@ -62,14 +73,13 @@ public class MenuControllerImpl implements IMenuController {
                     break;
                 case "playlists":
                     if (choice.length > ONE) {
-                        showCategorizedPlaylists(choice[ONE]);
+                        showCategorizedPlaylists(choice[SECOND_INPUT_VALUE]);
                     } else {
                         System.out.println(ConsoleOutput.ADD_CATEGORY_NAME);
                     }
                     break;
                 case "exit":
                     showGoodbyeMessage();
-                    System.exit(0);
                     break;
                 default:
                     System.out.println(ConsoleOutput.VALUE_NOT_SUPPORTED);
@@ -114,18 +124,6 @@ public class MenuControllerImpl implements IMenuController {
     @Override
     public void showGoodbyeMessage() {
         System.out.println(ConsoleOutput.GOODBYE);
-    }
-
-    private boolean authorizeApplication() {
-        try {
-            authService.printAuthURL();
-            String authCode = authService.getAuthCode(LocalhostServer.initAndStart());
-            HttpRequest authRequest = authService.createAuthReq(authCode);
-            String accessToken = authService.getAccessToken(authRequest);
-            
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        System.exit(0);
     }
 }
