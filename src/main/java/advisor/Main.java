@@ -2,7 +2,7 @@ package advisor;
 
 import advisor.controllers.IMenuController;
 import advisor.controllers.impl.MenuControllerImpl;
-import advisor.utils.Config;
+import advisor.config.SpotifyApiConfig;
 
 public class Main {
     public static final int ZERO = 0;
@@ -16,10 +16,10 @@ public class Main {
     public static void main(String[] args) {;
         if (args.length > ZERO) {
             if (args[FIRST_ARG].equals(ACCESS)) {
-                Config.AUTH_SERVER_PATH = args[SECOND_ARG];
+                SpotifyApiConfig.AUTH_SERVER_PATH = args[SECOND_ARG];
             }
             if (args[THIRD_ARG].equals(RESOURCE)) {
-                Config.API_SERVER_PATH = args[FOURTH_ARG];
+                SpotifyApiConfig.API_SERVER_PATH = args[FOURTH_ARG];
             }
         }
 

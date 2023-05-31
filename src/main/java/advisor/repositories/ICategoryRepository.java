@@ -1,9 +1,9 @@
-package advisor.services;
+package advisor.repositories;
 
 import advisor.models.Category;
 
 import java.util.List;
 
-public interface ICategoryService {
+public interface ICategoryRepository {
     List<Category> getAll();
 }

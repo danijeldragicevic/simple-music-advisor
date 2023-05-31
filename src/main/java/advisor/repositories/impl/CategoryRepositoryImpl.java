@@ -1,11 +1,11 @@
-package advisor.services.impl;
+package advisor.repositories.impl;
 
 import advisor.models.Category;
-import advisor.services.ICategoryService;
+import advisor.repositories.ICategoryRepository;
 
 import java.util.List;
 
-public class CategoryServiceImpl implements ICategoryService {
+public class CategoryRepositoryImpl implements ICategoryRepository {
     private List<Category> categories = List.of(
             Category.TOP_LISTS,
             Category.POP,

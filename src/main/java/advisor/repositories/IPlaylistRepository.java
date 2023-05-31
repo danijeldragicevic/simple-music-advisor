@@ -1,10 +1,10 @@
-package advisor.services;
+package advisor.repositories;
 
 import advisor.models.Playlist;
 
 import java.util.List;
 
-public interface IPlaylistService {
+public interface IPlaylistRepository {
     List<Playlist> getAll();
     List<Playlist> getAllByCategoryName(String categoryName);
 }

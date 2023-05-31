@@ -1,7 +1,7 @@
-package advisor.services.impl;
+package advisor.repositories.impl;
 
-import advisor.services.IAuthorizationService;
-import advisor.utils.Config;
+import advisor.repositories.IAuthRepository;
+import advisor.config.SpotifyApiConfig;
 import advisor.utils.ConsoleOutput;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -13,16 +13,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class AuthorizationServiceImpl implements IAuthorizationService {
+public class AuthRepositoryImpl implements IAuthRepository {
     
     @Override
     public void printAuthURL() {
         System.out.println(ConsoleOutput.REQUEST_THE_ACCESS_CODE);
         System.out.println(
-                Config.AUTH_SERVER_PATH + "/authorize" + "?client_id=" + 
-                Config.CLIENT_ID + "&redirect_uri=" + 
-                Config.REDIRECT_URI + "&response_type=" + 
-                Config.RESPONSE_TYPE_CODE
+                SpotifyApiConfig.AUTH_SERVER_PATH + "/authorize" + "?client_id=" + 
+                SpotifyApiConfig.CLIENT_ID + "&redirect_uri=" + 
+                SpotifyApiConfig.REDIRECT_URI + "&response_type=" + 
+                SpotifyApiConfig.RESPONSE_TYPE_CODE
         );
     }
 
@@ -34,7 +34,7 @@ public class AuthorizationServiceImpl implements IAuthorizationService {
                     exchange -> {
                         String query = exchange.getRequestURI().getQuery();
                         String request = "";
-                        if (query != null && query.contains(Config.RESPONSE_TYPE_CODE)) {
+                        if (query != null && query.contains(SpotifyApiConfig.RESPONSE_TYPE_CODE)) {
                             authCode[0] = query.substring(5);
                             System.out.println(ConsoleOutput.CODE_RECEIVED);
                             request = ConsoleOutput.GOT_THE_CODE;
@@ -60,16 +60,16 @@ public class AuthorizationServiceImpl implements IAuthorizationService {
     }
 
     @Override
-    public HttpRequest createAuthReq(String authCode) {
+    public HttpRequest createAuthenticationReq(String authCode) {
         HttpRequest request = HttpRequest.newBuilder()
                 .header("Content-Type", "application/x-www-form-urlencoded")
-                .uri(URI.create(Config.AUTH_SERVER_PATH + "/api/token"))
+                .uri(URI.create(SpotifyApiConfig.AUTH_SERVER_PATH + "/api/token"))
                 .POST(HttpRequest.BodyPublishers.ofString(""
-                        + "grant_type=" + Config.GRANT_TYPE
+                        + "grant_type=" + SpotifyApiConfig.GRANT_TYPE
                         + "&code=" + authCode
-                        + "&client_id=" + Config.CLIENT_ID
-                        + "&client_secret=" + Config.CLIENT_SECRET
-                        + "&redirect_uri=" + Config.REDIRECT_URI
+                        + "&client_id=" + SpotifyApiConfig.CLIENT_ID
+                        + "&client_secret=" + SpotifyApiConfig.CLIENT_SECRET
+                        + "&redirect_uri=" + SpotifyApiConfig.REDIRECT_URI
                 ))
                 .build();
 
@@ -96,5 +96,16 @@ public class AuthorizationServiceImpl implements IAuthorizationService {
         }
         
         return accessToken;
+    }
+
+    @Override
+    public HttpRequest createAuthorizationReq(String accessToken, String apiPath) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .header("Authorization", "Bearer " + accessToken)
+                .uri(URI.create(apiPath))
+                .GET()
+                .build();
+        
+        return request;
     }
 }

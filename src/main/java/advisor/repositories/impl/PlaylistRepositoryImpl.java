@@ -1,12 +1,12 @@
-package advisor.services.impl;
+package advisor.repositories.impl;
 
 import advisor.models.Category;
 import advisor.models.Playlist;
-import advisor.services.IPlaylistService;
+import advisor.repositories.IPlaylistRepository;
 
 import java.util.List;
 
-public class PlaylistServiceImpl implements IPlaylistService {
+public class PlaylistRepositoryImpl implements IPlaylistRepository {
     private List<Playlist> playlists = List.of(
             new Playlist("Mellow Morning"),
             new Playlist("Wake Up and Smell the Coffee"),
