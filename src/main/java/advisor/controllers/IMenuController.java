@@ -4,8 +4,8 @@ public interface IMenuController {
     void showAuthMenu();
     void showMainMenu();
     void showNewReleases();
-    void showFeaturedPlayLists();
+    void showFeaturedPlaylists();
     void showCategories();
     void showCategorizedPlaylists(String categoryName);
-    void showGoodbyeMessage();
+    void exitTheApplication();
 }

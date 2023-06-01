@@ -5,13 +5,13 @@ import advisor.controllers.impl.MenuControllerImpl;
 import advisor.config.ExternalApiConfig;
 
 public class Main {
-    public static final int ZERO_LENGTH = 0;
-    public static final int FIRST_ARG = 0;
-    public static final int SECOND_ARG = 1;
-    public static final int THIRD_ARG = 2;
-    public static final int FOURTH_ARG = 3;
-    public static final String ACCESS = "-access";
-    public static final String RESOURCE = "-resource";
+    private static final int ZERO_LENGTH = 0;
+    private static final int FIRST_ARG = 0;
+    private static final int SECOND_ARG = 1;
+    private static final int THIRD_ARG = 2;
+    private static final int FOURTH_ARG = 3;
+    private static final String ACCESS = "-access";
+    private static final String RESOURCE = "-resource";
 
     public static void main(String[] args) {;
         if (args.length > ZERO_LENGTH) {

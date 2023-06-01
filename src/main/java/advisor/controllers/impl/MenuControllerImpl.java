@@ -1,14 +1,14 @@
 package advisor.controllers.impl;
 
 import advisor.controllers.IMenuController;
-import advisor.repositories.IPlaylistRepository;
-import advisor.repositories.impl.PlaylistRepositoryImpl;
 import advisor.services.IAlbumService;
 import advisor.services.IAuthService;
 import advisor.services.ICategoryService;
+import advisor.services.IPlaylistService;
 import advisor.services.impl.AlbumServiceImpl;
 import advisor.services.impl.AuthServiceImpl;
 import advisor.services.impl.CategoryServiceImpl;
+import advisor.services.impl.PlaylistServiceImpl;
 import advisor.utils.ConsoleOutput;
 import advisor.utils.InputScanner;
 
@@ -20,7 +20,7 @@ public class MenuControllerImpl implements IMenuController {
     
     private final IAuthService authService = new AuthServiceImpl();
     private final IAlbumService albumService = new AlbumServiceImpl();
-    private final IPlaylistRepository playlistRepository = new PlaylistRepositoryImpl();
+    private final IPlaylistService playlistService = new PlaylistServiceImpl();
     private final ICategoryService categoryService = new CategoryServiceImpl();
 
     private static String accessToken;
@@ -40,8 +40,7 @@ public class MenuControllerImpl implements IMenuController {
                     showMainMenu();
                     break;
                 case "exit":
-                    showGoodbyeMessage();
-                    break;
+                    exitTheApplication();
                 default:
                     System.out.println("Please, provide access for application.");
             }
@@ -57,7 +56,7 @@ public class MenuControllerImpl implements IMenuController {
                     showNewReleases();
                     break;
                 case "featured":
-                    showFeaturedPlayLists();
+                    showFeaturedPlaylists();
                     break;
                 case "categories":
                     showCategories();
@@ -70,8 +69,7 @@ public class MenuControllerImpl implements IMenuController {
                     }
                     break;
                 case "exit":
-                    showGoodbyeMessage();
-                    break;
+                    exitTheApplication();
                 default:
                     System.out.println("Such value is not supported.");
             }
@@ -80,23 +78,20 @@ public class MenuControllerImpl implements IMenuController {
 
     @Override
     public void showNewReleases() {
-        albumService.getNewReleases(accessToken).forEach(
-                album -> System.out.println(album)
-        );
+        albumService.getNewReleases(accessToken)
+                .forEach(System.out::println);
     }
     
     @Override
-    public void showFeaturedPlayLists() {
-        playlistRepository.getAll().forEach(
-              playlist -> System.out.println(playlist.getName())  
-        );
+    public void showFeaturedPlaylists() {
+        playlistService.getFeaturedPlaylists(accessToken)
+                .forEach(System.out::println);
     }
     
     @Override
     public void showCategories() {
-        categoryService.getAllCategories(accessToken).forEach(
-                category -> System.out.println(category)
-        );
+        categoryService.getAllCategories(accessToken)
+                .forEach(System.out::println);
     }
 
     @Override
@@ -104,13 +99,13 @@ public class MenuControllerImpl implements IMenuController {
         ConsoleOutput consoleOutput = new ConsoleOutput(categoryName);
         System.out.println(consoleOutput.PLAYLISTS);
         
-        playlistRepository.getAllByCategoryName(categoryName).forEach(
-                category -> System.out.println(category.getName())
-        );
+//        playlistService.getAllByCategoryName(categoryName).forEach(
+//                category -> System.out.println(category.getName())
+//        );
     }
 
     @Override
-    public void showGoodbyeMessage() {
+    public void exitTheApplication() {
         System.exit(STATUS_ZERO);
     }
 }

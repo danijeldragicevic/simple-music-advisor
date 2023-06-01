@@ -2,16 +2,9 @@ package advisor.models;
 
 public class Playlist {
     private String name;
-    private Category category;
+    private String externalUrl;
     
-    public Playlist(String name) {
-        this.name = name;
-    }
-
-    public Playlist(String name, Category category) {
-        this.name = name;
-        this.category = category;
-    }
+    public Playlist() {}
 
     public String getName() {
         return name;
@@ -20,12 +13,18 @@ public class Playlist {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Category getCategory() {
-        return category;
+    
+    public String getExternalUrl() {
+        return externalUrl;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setExternalUrl(String externalUrl) {
+        this.externalUrl = externalUrl;
+    }
+
+    @Override
+    public String toString() {
+        return name + "\n" + 
+               externalUrl + "\n";
     }
 }
