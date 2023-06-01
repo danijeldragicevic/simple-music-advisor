@@ -34,7 +34,7 @@ public class MenuControllerImpl implements IMenuController {
                     try {
                         accessToken = authService.getAccessToken();
                     } catch (RuntimeException e) {
-                        System.out.println(ConsoleOutput.TRY_AGAIN);
+                        System.out.println("Something went wrong. Please try again.");
                         break;
                     }
                     showMainMenu();
@@ -43,7 +43,7 @@ public class MenuControllerImpl implements IMenuController {
                     showGoodbyeMessage();
                     break;
                 default:
-                    System.out.println(ConsoleOutput.PROVIDE_ACCESS);
+                    System.out.println("Please, provide access for application.");
             }
         }
     }
@@ -66,21 +66,20 @@ public class MenuControllerImpl implements IMenuController {
                     if (choice.length > LENGTH_ONE) {
                         showCategorizedPlaylists(choice[SECOND_INPUT_VALUE]);
                     } else {
-                        System.out.println(ConsoleOutput.ADD_CATEGORY_NAME);
+                        System.out.println("Need to add category name also. Please try again.");
                     }
                     break;
                 case "exit":
                     showGoodbyeMessage();
                     break;
                 default:
-                    System.out.println(ConsoleOutput.VALUE_NOT_SUPPORTED);
+                    System.out.println("Such value is not supported.");
             }
         }
     }
 
     @Override
     public void showNewReleases() {
-        System.out.println(ConsoleOutput.NEW_RELEASES);
         albumService.getNewReleases(accessToken).forEach(
                 album -> System.out.println(album)
         );
@@ -88,7 +87,6 @@ public class MenuControllerImpl implements IMenuController {
     
     @Override
     public void showFeaturedPlayLists() {
-        System.out.println(ConsoleOutput.FEATURED);
         playlistRepository.getAll().forEach(
               playlist -> System.out.println(playlist.getName())  
         );
@@ -96,7 +94,6 @@ public class MenuControllerImpl implements IMenuController {
     
     @Override
     public void showCategories() {
-        System.out.println(ConsoleOutput.CATEGORIES);
         categoryService.getAllCategories(accessToken).forEach(
                 category -> System.out.println(category)
         );
@@ -114,7 +111,6 @@ public class MenuControllerImpl implements IMenuController {
 
     @Override
     public void showGoodbyeMessage() {
-        System.out.println(ConsoleOutput.GOODBYE);
         System.exit(STATUS_ZERO);
     }
 }

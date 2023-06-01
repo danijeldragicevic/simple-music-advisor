@@ -17,7 +17,7 @@ public class AuthRepositoryImpl implements IAuthRepository {
     
     @Override
     public void printAuthURL() {
-        System.out.println(ConsoleOutput.REQUEST_THE_ACCESS_CODE);
+        System.out.println("use this link to request the access code:");
         System.out.println(
                 ExternalApiConfig.AUTH_SERVER_PATH + "/authorize" + "?client_id=" + 
                 ExternalApiConfig.CLIENT_ID + "&redirect_uri=" + 
@@ -36,24 +36,24 @@ public class AuthRepositoryImpl implements IAuthRepository {
                         String request = "";
                         if (query != null && query.contains(ExternalApiConfig.RESPONSE_TYPE_CODE)) {
                             authCode[0] = query.substring(5);
-                            System.out.println(ConsoleOutput.CODE_RECEIVED);
-                            request = ConsoleOutput.GOT_THE_CODE;
+                            System.out.println("code received");
+                            request = "Got the code, return back to your program.";
                         } else {
-                            request = ConsoleOutput.CODE_NOT_FOUND;
+                            request = "Authorization code not found. Please try again.";
                         }
                         exchange.sendResponseHeaders(HTTP_OK, request.length());
                         exchange.getResponseBody().write(request.getBytes());
                         exchange.getResponseBody().close();
                     });
 
-            System.out.println(ConsoleOutput.WAITING_FOR_CODE);
+            System.out.println("waiting for code...");
             while (authCode[0] == null) {
                 Thread.sleep(10);
             }
             server.stop(5);
             
         } catch (InterruptedException e) {
-            System.out.println(ConsoleOutput.SERVER_ERROR);
+            System.out.println("Server error!");
         }
         
         return authCode[0];
@@ -79,8 +79,8 @@ public class AuthRepositoryImpl implements IAuthRepository {
     @Override
     public String getAccessToken(HttpRequest request) {
         String accessToken = null;
-        System.out.println(ConsoleOutput.MAKING_HTTP_REQ);
-        System.out.println(ConsoleOutput.RESPONSE);
+        System.out.println("Making http request for access_token...");
+        System.out.println("response:");
         try {
             HttpClient client = HttpClient.newBuilder().build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -90,9 +90,9 @@ public class AuthRepositoryImpl implements IAuthRepository {
             
             assert accessToken != null;
             System.out.println(response.body());
-            System.out.println(ConsoleOutput.SUCCESS);
+            System.out.println("Success!");
         } catch (InterruptedException | IOException e) { 
-            System.out.println(ConsoleOutput.ERROR_RESPONSE); 
+            System.out.println("Error response!"); 
         }
         
         return accessToken;
