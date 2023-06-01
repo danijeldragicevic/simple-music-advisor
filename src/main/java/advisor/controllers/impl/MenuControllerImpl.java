@@ -30,8 +30,7 @@ public class MenuControllerImpl implements IMenuController {
     
     @Override
     public void showAuthMenu() {
-        boolean exit = false;
-        while (!exit) {
+        while (true) {
             String[] choice = InputScanner.getStringInput();
             switch (choice[FIRST_INPUT_VALUE]) {
                 case "auth":
