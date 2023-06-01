@@ -11,11 +11,6 @@ public class Album {
     
     public Album() {}
     
-    public Album(String name, List<String> artists) {
-        this.name = name;
-        this.artists = artists;
-    }
-
     public String getName() {
         return name;
     }

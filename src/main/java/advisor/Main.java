@@ -5,6 +5,7 @@ import advisor.controllers.impl.MenuControllerImpl;
 import advisor.config.ExternalApiConfig;
 
 public class Main {
+    public static final int ZERO_LENGTH = 0;
     public static final int FIRST_ARG = 0;
     public static final int SECOND_ARG = 1;
     public static final int THIRD_ARG = 2;
@@ -13,7 +14,7 @@ public class Main {
     public static final String RESOURCE = "-resource";
 
     public static void main(String[] args) {;
-        if (args.length > 0) {
+        if (args.length > ZERO_LENGTH) {
             if (args[FIRST_ARG].equals(ACCESS)) {
                 ExternalApiConfig.AUTH_SERVER_PATH = args[SECOND_ARG];
             }

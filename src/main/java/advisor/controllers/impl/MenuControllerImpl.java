@@ -26,6 +26,8 @@ import java.util.List;
 public class MenuControllerImpl implements IMenuController {
     private static final int FIRST_INPUT_VALUE = 0;
     private static final int SECOND_INPUT_VALUE = 1;
+    private static final int LENGTH_ONE = 1;
+    private static final int STATUS_ZERO = 0;
     
     private static final IAuthService authService = new AuthServiceImpl();
     private static final IAlbumService albumService = new AlbumServiceImpl();
@@ -68,7 +70,7 @@ public class MenuControllerImpl implements IMenuController {
                     showCategories();
                     break;
                 case "playlists":
-                    if (choice.length > 1) {
+                    if (choice.length > LENGTH_ONE) {
                         showCategorizedPlaylists(choice[SECOND_INPUT_VALUE]);
                     } else {
                         System.out.println(ConsoleOutput.ADD_CATEGORY_NAME);
@@ -121,6 +123,6 @@ public class MenuControllerImpl implements IMenuController {
     @Override
     public void showGoodbyeMessage() {
         System.out.println(ConsoleOutput.GOODBYE);
-        System.exit(0);
+        System.exit(STATUS_ZERO);
     }
 }
