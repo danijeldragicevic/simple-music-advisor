@@ -11,7 +11,7 @@ public class AuthServiceImpl implements IAuthService {
     private final IAuthRepository authRepository = new AuthRepositoryImpl();
     
     @Override
-    public String getAccessToken() {
+    public String getAccessToken() throws RuntimeException {
         authRepository.printAuthURL();
         String authCode = authRepository.getAuthenticationCode(LocalhostServer.initAndStart());
         HttpRequest authReq = authRepository.createAuthenticationReq(authCode);

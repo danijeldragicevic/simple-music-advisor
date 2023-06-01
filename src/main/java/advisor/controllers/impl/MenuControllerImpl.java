@@ -2,25 +2,17 @@ package advisor.controllers.impl;
 
 import advisor.controllers.IMenuController;
 import advisor.models.Album;
-import advisor.repositories.IAlbumRepository;
 import advisor.repositories.ICategoryRepository;
 import advisor.repositories.IPlaylistRepository;
-import advisor.repositories.impl.AlbumRepositoryImpl;
 import advisor.repositories.impl.CategoryRepositoryImpl;
 import advisor.repositories.impl.PlaylistRepositoryImpl;
-import advisor.config.ExternalApiConfig;
 import advisor.services.IAlbumService;
 import advisor.services.IAuthService;
 import advisor.services.impl.AlbumServiceImpl;
 import advisor.services.impl.AuthServiceImpl;
 import advisor.utils.ConsoleOutput;
 import advisor.utils.InputScanner;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import java.net.http.HttpRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MenuControllerImpl implements IMenuController {
@@ -43,7 +35,12 @@ public class MenuControllerImpl implements IMenuController {
             String[] choice = InputScanner.getStringInput();
             switch (choice[FIRST_INPUT_VALUE]) {
                 case "auth":
-                    accessToken = authService.getAccessToken();
+                    try {
+                        accessToken = authService.getAccessToken();
+                    } catch (RuntimeException e) {
+                        System.out.println(ConsoleOutput.TRY_AGAIN);
+                        break;
+                    }
                     showMainMenu();
                     break;
                 case "exit":
