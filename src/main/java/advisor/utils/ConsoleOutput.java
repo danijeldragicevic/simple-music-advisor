@@ -7,7 +7,7 @@ public final class ConsoleOutput {
     public static final String FEATURED = "---FEATURED---";
     public static final String CATEGORIES = "---CATEGORIES---";
     public static final String GOODBYE = "---GOODBYE!---";
-    public String PLAYLISTS = "";
+    public static String PLAYLISTS = "";
     
     public static final String PROVIDE_ACCESS = "Please, provide access for application.";
     public static final String ADD_CATEGORY_NAME = "Need to add category name also. Please try again...";
