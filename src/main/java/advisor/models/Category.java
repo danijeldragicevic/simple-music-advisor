@@ -1,18 +1,20 @@
 package advisor.models;
 
-public enum Category {
-    TOP_LISTS("Top Lists"),
-    POP("Pop"),
-    MOOD("Mood"),
-    LATIN("Latin");
-    
+public class Category {
     private String name;
 
-    Category(String name) {
+    public Category() {}
+
+    public void setName(String name) {
         this.name = name;
     }
 
     public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
         return name;
     }
 }

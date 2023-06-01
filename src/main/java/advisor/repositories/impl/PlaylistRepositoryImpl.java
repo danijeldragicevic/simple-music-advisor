@@ -1,6 +1,5 @@
 package advisor.repositories.impl;
 
-import advisor.models.Category;
 import advisor.models.Playlist;
 import advisor.repositories.IPlaylistRepository;
 
@@ -15,10 +14,10 @@ public class PlaylistRepositoryImpl implements IPlaylistRepository {
     );
     
     private List<Playlist> moodPlaylists = List.of(
-            new Playlist("Walk Like A Badass", Category.MOOD),
-            new Playlist("Rage Beats", Category.MOOD),
-            new Playlist("Arab Mood Booster", Category.MOOD),
-            new Playlist("Sunday Stroll", Category.MOOD)
+            new Playlist("Walk Like A Badass"),
+            new Playlist("Rage Beats"),
+            new Playlist("Arab Mood Booster"),
+            new Playlist("Sunday Stroll")
     );
     
     @Override

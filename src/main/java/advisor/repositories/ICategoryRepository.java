@@ -1,9 +1,7 @@
 package advisor.repositories;
 
-import advisor.models.Category;
-
-import java.util.List;
+import java.net.http.HttpRequest;
 
 public interface ICategoryRepository {
-    List<Category> getAll();
+    String getCategories(HttpRequest request);
 }

@@ -25,10 +25,10 @@ public class AlbumServiceImpl implements IAlbumService {
         String response = albumRepository.getNewReleases(request);
 
         JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
-        JsonObject albums = jsonResponse.getAsJsonObject("albums");
+        JsonObject jsonAlbums = jsonResponse.getAsJsonObject("albums");
 
-        List<Album> newReleases = new ArrayList<>();
-        for (JsonElement item: albums.getAsJsonArray("items")) {
+        List<Album> albums = new ArrayList<>();
+        for (JsonElement item: jsonAlbums.getAsJsonArray("items")) {
             
             List<String> artists = new ArrayList<>();
             for (JsonElement artist: item.getAsJsonObject().getAsJsonArray("artists")) {
@@ -40,9 +40,9 @@ public class AlbumServiceImpl implements IAlbumService {
             album.setExternalUrl(item.getAsJsonObject().get("external_urls").getAsJsonObject().get("spotify").toString().replaceAll("\"", ""));
             album.setArtists(artists);
 
-            newReleases.add(album);
+            albums.add(album);
         }
         
-        return newReleases;
+        return albums;
     }
 }

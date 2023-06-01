@@ -1,19 +1,16 @@
 package advisor.controllers.impl;
 
 import advisor.controllers.IMenuController;
-import advisor.models.Album;
-import advisor.repositories.ICategoryRepository;
 import advisor.repositories.IPlaylistRepository;
-import advisor.repositories.impl.CategoryRepositoryImpl;
 import advisor.repositories.impl.PlaylistRepositoryImpl;
 import advisor.services.IAlbumService;
 import advisor.services.IAuthService;
+import advisor.services.ICategoryService;
 import advisor.services.impl.AlbumServiceImpl;
 import advisor.services.impl.AuthServiceImpl;
+import advisor.services.impl.CategoryServiceImpl;
 import advisor.utils.ConsoleOutput;
 import advisor.utils.InputScanner;
-
-import java.util.List;
 
 public class MenuControllerImpl implements IMenuController {
     private static final int FIRST_INPUT_VALUE = 0;
@@ -21,10 +18,10 @@ public class MenuControllerImpl implements IMenuController {
     private static final int LENGTH_ONE = 1;
     private static final int STATUS_ZERO = 0;
     
-    private static final IAuthService authService = new AuthServiceImpl();
-    private static final IAlbumService albumService = new AlbumServiceImpl();
-    private static final IPlaylistRepository playlistRepository = new PlaylistRepositoryImpl();
-    private static final ICategoryRepository categoryRepository = new CategoryRepositoryImpl();
+    private final IAuthService authService = new AuthServiceImpl();
+    private final IAlbumService albumService = new AlbumServiceImpl();
+    private final IPlaylistRepository playlistRepository = new PlaylistRepositoryImpl();
+    private final ICategoryService categoryService = new CategoryServiceImpl();
 
     private static String accessToken;
     
@@ -84,10 +81,9 @@ public class MenuControllerImpl implements IMenuController {
     @Override
     public void showNewReleases() {
         System.out.println(ConsoleOutput.NEW_RELEASES);
-        List<Album> newReleases = albumService.getNewReleases(accessToken);
-        for (Album album: newReleases) {
-            System.out.println(album);
-        }
+        albumService.getNewReleases(accessToken).forEach(
+                album -> System.out.println(album)
+        );
     }
     
     @Override
@@ -101,8 +97,8 @@ public class MenuControllerImpl implements IMenuController {
     @Override
     public void showCategories() {
         System.out.println(ConsoleOutput.CATEGORIES);
-        categoryRepository.getAll().forEach(
-                category -> System.out.println(category.getName())
+        categoryService.getAllCategories(accessToken).forEach(
+                category -> System.out.println(category)
         );
     }
 

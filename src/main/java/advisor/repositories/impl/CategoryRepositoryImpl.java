@@ -1,20 +1,21 @@
 package advisor.repositories.impl;
 
-import advisor.models.Category;
 import advisor.repositories.ICategoryRepository;
 
-import java.util.List;
+import java.io.IOException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class CategoryRepositoryImpl implements ICategoryRepository {
-    private List<Category> categories = List.of(
-            Category.TOP_LISTS,
-            Category.POP,
-            Category.MOOD,
-            Category.LATIN
-    );
-    
     @Override
-    public List<Category> getAll() {
-        return categories;
+    public String getCategories(HttpRequest request) {
+        HttpClient client = HttpClient.newBuilder().build();
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (InterruptedException | IOException e) {
+            return "Error response";
+        }
     }
 }
