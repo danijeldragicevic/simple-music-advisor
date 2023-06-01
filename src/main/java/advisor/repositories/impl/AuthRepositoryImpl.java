@@ -1,7 +1,7 @@
 package advisor.repositories.impl;
 
 import advisor.repositories.IAuthRepository;
-import advisor.config.SpotifyApiConfig;
+import advisor.config.ExternalApiConfig;
 import advisor.utils.ConsoleOutput;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,22 +19,22 @@ public class AuthRepositoryImpl implements IAuthRepository {
     public void printAuthURL() {
         System.out.println(ConsoleOutput.REQUEST_THE_ACCESS_CODE);
         System.out.println(
-                SpotifyApiConfig.AUTH_SERVER_PATH + "/authorize" + "?client_id=" + 
-                SpotifyApiConfig.CLIENT_ID + "&redirect_uri=" + 
-                SpotifyApiConfig.REDIRECT_URI + "&response_type=" + 
-                SpotifyApiConfig.RESPONSE_TYPE_CODE
+                ExternalApiConfig.AUTH_SERVER_PATH + "/authorize" + "?client_id=" + 
+                ExternalApiConfig.CLIENT_ID + "&redirect_uri=" + 
+                ExternalApiConfig.REDIRECT_URI + "&response_type=" + 
+                ExternalApiConfig.RESPONSE_TYPE_CODE
         );
     }
 
     @Override
-    public String getAuthCode(HttpServer server) {
+    public String getAuthenticationCode(HttpServer server) {
         final String[] authCode = new String[1];
         try {
             server.createContext("/",
                     exchange -> {
                         String query = exchange.getRequestURI().getQuery();
                         String request = "";
-                        if (query != null && query.contains(SpotifyApiConfig.RESPONSE_TYPE_CODE)) {
+                        if (query != null && query.contains(ExternalApiConfig.RESPONSE_TYPE_CODE)) {
                             authCode[0] = query.substring(5);
                             System.out.println(ConsoleOutput.CODE_RECEIVED);
                             request = ConsoleOutput.GOT_THE_CODE;
@@ -63,13 +63,13 @@ public class AuthRepositoryImpl implements IAuthRepository {
     public HttpRequest createAuthenticationReq(String authCode) {
         HttpRequest request = HttpRequest.newBuilder()
                 .header("Content-Type", "application/x-www-form-urlencoded")
-                .uri(URI.create(SpotifyApiConfig.AUTH_SERVER_PATH + "/api/token"))
+                .uri(URI.create(ExternalApiConfig.AUTH_SERVER_PATH + "/api/token"))
                 .POST(HttpRequest.BodyPublishers.ofString(""
-                        + "grant_type=" + SpotifyApiConfig.GRANT_TYPE
+                        + "grant_type=" + ExternalApiConfig.GRANT_TYPE
                         + "&code=" + authCode
-                        + "&client_id=" + SpotifyApiConfig.CLIENT_ID
-                        + "&client_secret=" + SpotifyApiConfig.CLIENT_SECRET
-                        + "&redirect_uri=" + SpotifyApiConfig.REDIRECT_URI
+                        + "&client_id=" + ExternalApiConfig.CLIENT_ID
+                        + "&client_secret=" + ExternalApiConfig.CLIENT_SECRET
+                        + "&redirect_uri=" + ExternalApiConfig.REDIRECT_URI
                 ))
                 .build();
 

@@ -8,7 +8,7 @@ public interface IAuthRepository {
     int HTTP_OK = 200;
     void printAuthURL();
     
-    String getAuthCode(HttpServer httpServer);
+    String getAuthenticationCode(HttpServer httpServer);
     HttpRequest createAuthenticationReq(String authCode);
     
     String getAccessToken(HttpRequest request);
