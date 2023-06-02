@@ -6,6 +6,6 @@ public interface IMenuController {
     void showNewReleases();
     void showFeaturedPlaylists();
     void showCategories();
-    void showCategorizedPlaylists(String categoryName);
+    void showCategorizedPlaylists(String cName);
     void exitTheApplication();
 }

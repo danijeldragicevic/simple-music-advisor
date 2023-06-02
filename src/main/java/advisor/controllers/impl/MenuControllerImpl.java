@@ -97,12 +97,11 @@ public class MenuControllerImpl implements IMenuController {
     }
 
     @Override
-    public void showCategorizedPlaylists(String categoryName) {
+    public void showCategorizedPlaylists(String cName) {
         List<Category> categories = categoryService.getAll(accessToken);
-        if (categories.stream().anyMatch(category -> category.getName().equalsIgnoreCase(categoryName))) {
-            playlistService.getByCategoryName(accessToken, categoryName)
+        if (categories.stream().anyMatch(category -> category.getName().equalsIgnoreCase(cName))) {
+            playlistService.getByCategoryName(accessToken, cName)
                         .forEach(System.out::println);
-        
         } else {
             System.out.println("Unknown category name.");
         }

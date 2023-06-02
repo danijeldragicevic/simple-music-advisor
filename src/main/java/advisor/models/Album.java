@@ -1,7 +1,5 @@
 package advisor.models;
 
-import com.google.gson.JsonElement;
-
 import java.util.List;
 
 public class Album {
