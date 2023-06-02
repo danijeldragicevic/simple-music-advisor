@@ -51,7 +51,7 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
             server.stop(5);
 
         } catch (InterruptedException e) {
-            System.out.println("Server error!\n");
+            System.out.println("Server error!");
         }
 
         return authCode[0];
@@ -88,9 +88,9 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
 
             assert accessToken != null;
             System.out.println(response.body());
-            System.out.println("Success!\n");
+            System.out.println("Success!");
         } catch (InterruptedException | IOException e) {
-            System.out.println("Error response!\n");
+            System.out.println("Error response!");
         }
 
         return accessToken;

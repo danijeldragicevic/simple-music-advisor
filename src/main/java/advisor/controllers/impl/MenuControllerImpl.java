@@ -36,7 +36,7 @@ public class MenuControllerImpl implements IMenuController {
                     try {
                         accessToken = authService.getAccessToken();
                     } catch (RuntimeException e) {
-                        System.out.println("Something went wrong. Please try again.\n");
+                        System.out.println("Something went wrong. Please try again.");
                         break;
                     }
                     showMainMenu();
@@ -44,7 +44,7 @@ public class MenuControllerImpl implements IMenuController {
                 case "exit":
                     exitTheApplication();
                 default:
-                    System.out.println("Please, provide access for application.\n");
+                    System.out.println("Please, provide access for application.");
             }
         }
     }
@@ -67,13 +67,13 @@ public class MenuControllerImpl implements IMenuController {
                     if (choice.length > LENGTH_ONE) {
                         showCategorizedPlaylists(choice[SECOND_INPUT_VALUE]);
                     } else {
-                        System.out.println("Need to add category name also. Please try again.\n");
+                        System.out.println("Need to add category name also. Please try again.");
                     }
                     break;
                 case "exit":
                     exitTheApplication();
                 default:
-                    System.out.println("Such value is not supported.\n");
+                    System.out.println("Such value is not supported.");
             }
         }
     }
@@ -94,7 +94,6 @@ public class MenuControllerImpl implements IMenuController {
     public void showCategories() {
         categoryService.getCategories(accessToken)
                 .forEach(System.out::println);
-        System.out.println("");
     }
 
     @Override
@@ -104,7 +103,7 @@ public class MenuControllerImpl implements IMenuController {
             playlistService.getPlaylistsByCategoryName(accessToken, cName)
                         .forEach(System.out::println);
         } else {
-            System.out.println("Unknown category name.\n");
+            System.out.println("Unknown category name.");
         }
     }
 
