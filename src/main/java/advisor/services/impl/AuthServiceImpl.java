@@ -1,21 +1,21 @@
 package advisor.services.impl;
 
-import advisor.repositories.IAuthRepository;
-import advisor.repositories.impl.AuthRepositoryImpl;
+import advisor.repositories.IExternalApiRepository;
+import advisor.repositories.impl.ExternalApiRepositoryImpl;
 import advisor.services.IAuthService;
 import advisor.utils.LocalhostServer;
 
 import java.net.http.HttpRequest;
 
 public class AuthServiceImpl implements IAuthService {
-    private final IAuthRepository authRepository = new AuthRepositoryImpl();
+    private final IExternalApiRepository repository = new ExternalApiRepositoryImpl();
     
     @Override
     public String getAccessToken() throws RuntimeException {
-        authRepository.printAuthURL();
-        String authCode = authRepository.getAuthenticationCode(LocalhostServer.initAndStart());
-        HttpRequest authReq = authRepository.createAuthenticationReq(authCode);
+        repository.printAuthURL();
+        String authCode = repository.getAuthenticationCode(LocalhostServer.initAndStart());
+        HttpRequest authReq = repository.createAuthenticationReq(authCode);
         
-        return authRepository.getAccessToken(authReq);
+        return repository.getAccessToken(authReq);
     }
 }

@@ -103,7 +103,7 @@ public class MenuControllerImpl implements IMenuController {
             playlistService.getByCategoryName(accessToken, cName)
                         .forEach(System.out::println);
         } else {
-            System.out.println("Unknown category name.");
+            System.out.println("Unknown category name.\n");
         }
     }
 

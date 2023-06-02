@@ -2,10 +2,8 @@ package advisor.services.impl;
 
 import advisor.config.ExternalApiConfig;
 import advisor.models.Category;
-import advisor.repositories.IAuthRepository;
-import advisor.repositories.ICategoryRepository;
-import advisor.repositories.impl.AuthRepositoryImpl;
-import advisor.repositories.impl.CategoryRepositoryImpl;
+import advisor.repositories.IExternalApiRepository;
+import advisor.repositories.impl.ExternalApiRepositoryImpl;
 import advisor.services.ICategoryService;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -16,13 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryServiceImpl implements ICategoryService {
-    private final IAuthRepository authRepository = new AuthRepositoryImpl();
-    private final ICategoryRepository categoryRepository = new CategoryRepositoryImpl();
+    private final IExternalApiRepository repository = new ExternalApiRepositoryImpl();
     
     @Override
     public List<Category> getAll(String accessToken) {
-        HttpRequest request = authRepository.createAuthorizationReq(accessToken, ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.CATEGORIES_PATH);
-        String response = categoryRepository.getAll(request);
+        HttpRequest request = repository.createAuthorizationReq(accessToken, ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.CATEGORIES_PATH);
+        String response = repository.getAllCategories(request);
 
         JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
         JsonObject jsonCategories = jsonResponse.getAsJsonObject("categories");
