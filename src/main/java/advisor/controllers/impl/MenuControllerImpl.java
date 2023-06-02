@@ -1,6 +1,7 @@
 package advisor.controllers.impl;
 
 import advisor.controllers.IMenuController;
+import advisor.models.Category;
 import advisor.services.IAlbumService;
 import advisor.services.IAuthService;
 import advisor.services.ICategoryService;
@@ -9,8 +10,9 @@ import advisor.services.impl.AlbumServiceImpl;
 import advisor.services.impl.AuthServiceImpl;
 import advisor.services.impl.CategoryServiceImpl;
 import advisor.services.impl.PlaylistServiceImpl;
-import advisor.utils.ConsoleOutput;
 import advisor.utils.InputScanner;
+
+import java.util.List;
 
 public class MenuControllerImpl implements IMenuController {
     private static final int FIRST_INPUT_VALUE = 0;
@@ -84,24 +86,26 @@ public class MenuControllerImpl implements IMenuController {
     
     @Override
     public void showFeaturedPlaylists() {
-        playlistService.getFeaturedPlaylists(accessToken)
+        playlistService.getAll(accessToken)
                 .forEach(System.out::println);
     }
     
     @Override
     public void showCategories() {
-        categoryService.getAllCategories(accessToken)
+        categoryService.getAll(accessToken)
                 .forEach(System.out::println);
     }
 
     @Override
     public void showCategorizedPlaylists(String categoryName) {
-        ConsoleOutput consoleOutput = new ConsoleOutput(categoryName);
-        System.out.println(consoleOutput.PLAYLISTS);
+        List<Category> categories = categoryService.getAll(accessToken);
+        if (categories.stream().anyMatch(category -> category.getName().equalsIgnoreCase(categoryName))) {
+            playlistService.getByCategoryName(accessToken, categoryName)
+                        .forEach(System.out::println);
         
-//        playlistService.getAllByCategoryName(categoryName).forEach(
-//                category -> System.out.println(category.getName())
-//        );
+        } else {
+            System.out.println("Unknown category name.");
+        }
     }
 
     @Override

@@ -2,7 +2,6 @@ package advisor.repositories.impl;
 
 import advisor.repositories.IAuthRepository;
 import advisor.config.ExternalApiConfig;
-import advisor.utils.ConsoleOutput;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;

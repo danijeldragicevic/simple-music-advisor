@@ -20,9 +20,9 @@ public class CategoryServiceImpl implements ICategoryService {
     private final ICategoryRepository categoryRepository = new CategoryRepositoryImpl();
     
     @Override
-    public List<Category> getAllCategories(String accessToken) {
+    public List<Category> getAll(String accessToken) {
         HttpRequest request = authRepository.createAuthorizationReq(accessToken, ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.CATEGORIES_PATH);
-        String response = categoryRepository.getCategories(request);
+        String response = categoryRepository.getAll(request);
 
         JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
         JsonObject jsonCategories = jsonResponse.getAsJsonObject("categories");

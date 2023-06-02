@@ -9,7 +9,7 @@ import java.net.http.HttpResponse;
 
 public class CategoryRepositoryImpl implements ICategoryRepository {
     @Override
-    public String getCategories(HttpRequest request) {
+    public String getAll(HttpRequest request) {
         HttpClient client = HttpClient.newBuilder().build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
