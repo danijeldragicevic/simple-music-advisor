@@ -15,7 +15,4 @@ public interface IExternalApiRepository {
     HttpRequest createAuthorizationReq(String accessToken, String apiPath);
 
     String getResource(HttpRequest request);
-    String getAllAlbums(HttpRequest request);
-    String getAllCategories(HttpRequest request);
-    String getAllPlaylists(HttpRequest request);
 }

@@ -51,7 +51,7 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
             server.stop(5);
 
         } catch (InterruptedException e) {
-            System.out.println("Server error!");
+            System.out.println("Server error!\n");
         }
 
         return authCode[0];
@@ -88,9 +88,9 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
 
             assert accessToken != null;
             System.out.println(response.body());
-            System.out.println("Success!");
+            System.out.println("Success!\n");
         } catch (InterruptedException | IOException e) {
-            System.out.println("Error response!");
+            System.out.println("Error response!\n");
         }
 
         return accessToken;
@@ -107,6 +107,7 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
         return request;
     }
 
+    @Override
     public String getResource(HttpRequest request) {
         HttpClient client = HttpClient.newBuilder().build();
         try {
@@ -115,20 +116,5 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
         } catch (InterruptedException | IOException e) {
             return "Error response";
         }
-    }
-
-    @Override
-    public String getAllAlbums(HttpRequest request) {
-        return getResource(request);
-    }
-
-    @Override
-    public String getAllCategories(HttpRequest request) {
-        return getResource(request);
-    }
-
-    @Override
-    public String getAllPlaylists(HttpRequest request) {
-        return getResource(request);
     }
 }

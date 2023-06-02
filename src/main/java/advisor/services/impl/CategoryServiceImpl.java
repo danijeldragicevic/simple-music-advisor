@@ -17,9 +17,9 @@ public class CategoryServiceImpl implements ICategoryService {
     private final IExternalApiRepository repository = new ExternalApiRepositoryImpl();
     
     @Override
-    public List<Category> getAll(String accessToken) {
+    public List<Category> getCategories(String accessToken) {
         HttpRequest request = repository.createAuthorizationReq(accessToken, ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.CATEGORIES_PATH);
-        String response = repository.getAllCategories(request);
+        String response = repository.getResource(request);
 
         JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
         JsonObject jsonCategories = jsonResponse.getAsJsonObject("categories");

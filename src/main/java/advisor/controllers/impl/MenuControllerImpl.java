@@ -36,7 +36,7 @@ public class MenuControllerImpl implements IMenuController {
                     try {
                         accessToken = authService.getAccessToken();
                     } catch (RuntimeException e) {
-                        System.out.println("Something went wrong. Please try again.");
+                        System.out.println("Something went wrong. Please try again.\n");
                         break;
                     }
                     showMainMenu();
@@ -44,7 +44,7 @@ public class MenuControllerImpl implements IMenuController {
                 case "exit":
                     exitTheApplication();
                 default:
-                    System.out.println("Please, provide access for application.");
+                    System.out.println("Please, provide access for application.\n");
             }
         }
     }
@@ -67,40 +67,41 @@ public class MenuControllerImpl implements IMenuController {
                     if (choice.length > LENGTH_ONE) {
                         showCategorizedPlaylists(choice[SECOND_INPUT_VALUE]);
                     } else {
-                        System.out.println("Need to add category name also. Please try again.");
+                        System.out.println("Need to add category name also. Please try again.\n");
                     }
                     break;
                 case "exit":
                     exitTheApplication();
                 default:
-                    System.out.println("Such value is not supported.");
+                    System.out.println("Such value is not supported.\n");
             }
         }
     }
 
     @Override
     public void showNewReleases() {
-        albumService.getNewReleases(accessToken)
+        albumService.getAlbums(accessToken)
                 .forEach(System.out::println);
     }
     
     @Override
     public void showFeaturedPlaylists() {
-        playlistService.getAll(accessToken)
+        playlistService.getPlaylists(accessToken)
                 .forEach(System.out::println);
     }
     
     @Override
     public void showCategories() {
-        categoryService.getAll(accessToken)
+        categoryService.getCategories(accessToken)
                 .forEach(System.out::println);
+        System.out.println("");
     }
 
     @Override
     public void showCategorizedPlaylists(String cName) {
-        List<Category> categories = categoryService.getAll(accessToken);
+        List<Category> categories = categoryService.getCategories(accessToken);
         if (categories.stream().anyMatch(category -> category.getName().equalsIgnoreCase(cName))) {
-            playlistService.getByCategoryName(accessToken, cName)
+            playlistService.getPlaylistsByCategoryName(accessToken, cName)
                         .forEach(System.out::println);
         } else {
             System.out.println("Unknown category name.\n");

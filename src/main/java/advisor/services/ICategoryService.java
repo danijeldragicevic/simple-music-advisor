@@ -5,5 +5,5 @@ import advisor.models.Category;
 import java.util.List;
 
 public interface ICategoryService {
-    List<Category> getAll(String accessToken);
+    List<Category> getCategories(String accessToken);
 }

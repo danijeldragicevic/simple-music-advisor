@@ -17,7 +17,7 @@ public class PlaylistServiceImpl implements IPlaylistService {
     private final IExternalApiRepository repository = new ExternalApiRepositoryImpl();
     
     @Override
-    public List<Playlist> getAll(String accessToken) {
+    public List<Playlist> getPlaylists(String accessToken) {
         HttpRequest request = repository.createAuthorizationReq(
                 accessToken, ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.FEATURED_PLAYLISTS_PATH);
         
@@ -25,7 +25,7 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
     @Override
-    public List<Playlist> getByCategoryName(String accessToken, String cName) {
+    public List<Playlist> getPlaylistsByCategoryName(String accessToken, String cName) {
         HttpRequest request = repository.createAuthorizationReq(
                 accessToken, ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.CATEGORIES_PATH + "/" + cName + "/playlists");
         
@@ -33,7 +33,7 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
     private List<Playlist> getPlaylists(HttpRequest request) {
-        String response = repository.getAllPlaylists(request);
+        String response = repository.getResource(request);
 
         JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
         JsonObject jsonPlaylists = jsonResponse.getAsJsonObject("playlists");

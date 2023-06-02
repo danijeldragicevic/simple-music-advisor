@@ -17,9 +17,9 @@ public class AlbumServiceImpl implements IAlbumService {
     private final IExternalApiRepository repository = new ExternalApiRepositoryImpl();
     
     @Override
-    public List<Album> getNewReleases(String accessToken) {
+    public List<Album> getAlbums(String accessToken) {
         HttpRequest request = repository.createAuthorizationReq(accessToken, ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.NEW_RELEASES_PATH);
-        String response = repository.getAllAlbums(request);
+        String response = repository.getResource(request);
 
         JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
         JsonObject jsonAlbums = jsonResponse.getAsJsonObject("albums");
