@@ -83,7 +83,7 @@ public class MenuControllerImpl implements IMenuController {
                     if (outputPage.getNextPageUrl().equals("null")) {
                         System.out.println("No more pages.");
                     } else {
-                        outputPage = showNextPage(outputPage.getNextPageUrl(), outputPage.getCurrentPage());
+                        outputPage = outputPageService.showSubPage(accessToken, outputPage.getNextPageUrl(), outputPage.getCurrentPage() + 1);
                         printOutput(outputPage);
                     }
                     break;
@@ -92,7 +92,7 @@ public class MenuControllerImpl implements IMenuController {
                     if (outputPage.getPreviousPageUrl().equals("null")) {
                         System.out.println("No more pages.");
                     } else {
-                        outputPage = showPreviousPage(outputPage.getPreviousPageUrl(), outputPage.getCurrentPage());
+                        outputPage = outputPageService.showSubPage(accessToken, outputPage.getPreviousPageUrl(), outputPage.getCurrentPage() - 1);
                         printOutput(outputPage);
                     }
                     break;
@@ -135,16 +135,6 @@ public class MenuControllerImpl implements IMenuController {
         }
     }
     
-    @Override
-    public OutputPage showNextPage(String nextPageUrl, int currentPage) {
-        return outputPageService.showNextPage(accessToken, nextPageUrl, currentPage);
-    }
-    
-    @Override
-    public OutputPage showPreviousPage(String previousPageUrl, int currentPage) {
-        return outputPageService.showPreviousPage(accessToken, previousPageUrl, currentPage);
-    }
-
     @Override
     public void printOutput(OutputPage outputPage) {
         outputPage.getItems().forEach(System.out::println);

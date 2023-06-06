@@ -9,8 +9,6 @@ public interface IMenuController {
     void showFeaturedPlaylists();
     void showCategories();
     void showCategorizedPlaylists(String cName);
-    OutputPage showNextPage(String nextPageUrl, int currentPage);
-    OutputPage showPreviousPage(String previousPageUrl, int currentPage);
     void printOutput(OutputPage outputPage);
     void exitTheApplication();
     

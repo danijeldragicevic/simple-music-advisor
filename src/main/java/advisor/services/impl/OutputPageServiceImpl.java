@@ -33,30 +33,14 @@ public class OutputPageServiceImpl {
         return outputPage;
     }
 
-    public OutputPage showNextPage(String accessToken, String nextPage, int currentPage) {
+    public OutputPage showSubPage(String accessToken, String nextPage, int currentPage) {
         HttpRequest authRequest = repository.createAuthorizationReq(accessToken, nextPage);
 
         String sResponse = repository.getResource(authRequest);
         JsonObject jResponse = JsonParser.parseString(sResponse).getAsJsonObject().getAsJsonObject("albums");
 
         OutputPage outputPage = new OutputPage();
-        outputPage.setCurrentPage(currentPage + 1);
-        outputPage.setTotalPagesToDisplay(calcTotalPages(jResponse, ExternalApiConfig.API_PAGE_LIMIT));
-        outputPage.setNextPageUrl(createNextPageUrl(jResponse));
-        outputPage.setPreviousPageUrl(createPreviousPageUrl(jResponse));
-        outputPage.setItems(createItems(jResponse));
-
-        return outputPage;
-    }
-    
-    public OutputPage showPreviousPage(String accessToken, String previousPage, int currentPage) {
-        HttpRequest authRequest = repository.createAuthorizationReq(accessToken, previousPage);
-
-        String sResponse = repository.getResource(authRequest);
-        JsonObject jResponse = JsonParser.parseString(sResponse).getAsJsonObject().getAsJsonObject("albums");
-
-        OutputPage outputPage = new OutputPage();
-        outputPage.setCurrentPage(currentPage - 1); 
+        outputPage.setCurrentPage(currentPage);
         outputPage.setTotalPagesToDisplay(calcTotalPages(jResponse, ExternalApiConfig.API_PAGE_LIMIT));
         outputPage.setNextPageUrl(createNextPageUrl(jResponse));
         outputPage.setPreviousPageUrl(createPreviousPageUrl(jResponse));
