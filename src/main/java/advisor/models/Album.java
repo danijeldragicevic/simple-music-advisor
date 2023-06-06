@@ -8,7 +8,11 @@ public class Album {
     private List<String> artists;
     
     public Album() {}
-    
+
+    public Album(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

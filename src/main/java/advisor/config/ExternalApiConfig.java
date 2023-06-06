@@ -15,5 +15,7 @@ public final class ExternalApiConfig {
     public static final String GRANT_TYPE = "authorization_code";
     public static final String RESPONSE_TYPE_CODE = "code";
     
+    public static int API_PAGE_LIMIT = 35;
+    
     private ExternalApiConfig() {}
 }
