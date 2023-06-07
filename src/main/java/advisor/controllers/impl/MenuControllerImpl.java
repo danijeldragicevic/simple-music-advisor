@@ -1,16 +1,18 @@
 package advisor.controllers.impl;
 
+import advisor.config.ExternalApiConfig;
 import advisor.controllers.IMenuController;
 import advisor.models.OutputPage;
-import advisor.services.IAlbumPageService;
 import advisor.services.IAuthService;
-import advisor.services.ICategoryPageService;
+import advisor.services.IPageService;
 import advisor.services.IPlaylistService;
-import advisor.services.impl.AlbumPageServiceImpl;
 import advisor.services.impl.AuthServiceImpl;
-import advisor.services.impl.CategoryPageServiceImpl;
+import advisor.services.impl.PageService;
 import advisor.services.impl.PlaylistServiceImpl;
 import advisor.utils.InputScanner;
+
+import static advisor.config.ResourceNames.ALBUMS;
+import static advisor.config.ResourceNames.CATEGORIES;
 
 public class MenuControllerImpl implements IMenuController {
     private static final int FIRST_INPUT_VALUE = 0;
@@ -19,8 +21,7 @@ public class MenuControllerImpl implements IMenuController {
     private static final int STATUS_ZERO = 0;
     
     private final IAuthService authService = new AuthServiceImpl();
-    private final IAlbumPageService albumPageService = new AlbumPageServiceImpl("albums");
-    private final ICategoryPageService categoryPageService = new CategoryPageServiceImpl("categories");
+    private IPageService pageService;
     
     // Working on this....
     private final IPlaylistService playlistService = new PlaylistServiceImpl();
@@ -58,14 +59,18 @@ public class MenuControllerImpl implements IMenuController {
             String[] choice = InputScanner.getStringInput();
             switch (choice[FIRST_INPUT_VALUE]) {
                 case "new":
-                    outputPage = albumPageService.getAlbumsPage(accessToken);
+                    pageService = new PageService(ALBUMS.getName());
+                    outputPage = pageService.createPage(accessToken, 
+                            ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.NEW_RELEASES_PATH + "?limit=" + ExternalApiConfig.API_PAGE_LIMIT, 1);
                     printOutput(outputPage);
                     break;
                 case "featured":
                     showFeaturedPlaylists();
                     break;
                 case "categories":
-                    outputPage = categoryPageService.getCategoriesPage(accessToken);
+                    pageService = new PageService(CATEGORIES.getName());
+                    outputPage = pageService.createPage(accessToken,
+                            ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.CATEGORIES_PATH + "?limit=" + ExternalApiConfig.API_PAGE_LIMIT, 1);
                     printOutput(outputPage);
                     break;
                 case "playlists":
@@ -79,12 +84,7 @@ public class MenuControllerImpl implements IMenuController {
                     if (outputPage.getNextPageUrl().equals("null")) {
                         System.out.println("No more pages.");
                     } else {
-                        if (outputPage.getResourcePageName().equals("albums")) {
-                            outputPage = albumPageService.getAlbumsSubPage(accessToken, outputPage.getNextPageUrl(), outputPage.getCurrentPage() + 1);
-                        }
-                        if (outputPage.getResourcePageName().equals("categories")) {
-                            outputPage = categoryPageService.getCategoriesSubPage(accessToken, outputPage.getNextPageUrl(), outputPage.getCurrentPage() + 1);
-                        }
+                        outputPage = pageService.createPage(accessToken, outputPage.getNextPageUrl(), outputPage.getCurrentPage() + 1);
                         printOutput(outputPage);
                     }
                     break;
@@ -92,12 +92,7 @@ public class MenuControllerImpl implements IMenuController {
                     if (outputPage.getPreviousPageUrl().equals("null")) {
                         System.out.println("No more pages.");
                     } else {
-                        if (outputPage.getResourcePageName().equals("albums")) {
-                            outputPage = albumPageService.getAlbumsSubPage(accessToken, outputPage.getPreviousPageUrl(), outputPage.getCurrentPage() - 1);
-                        }
-                        if (outputPage.getResourcePageName().equals("categories")) {
-                            outputPage = categoryPageService.getCategoriesSubPage(accessToken, outputPage.getPreviousPageUrl(), outputPage.getCurrentPage() - 1);
-                        }
+                        outputPage = pageService.createPage(accessToken, outputPage.getPreviousPageUrl(), outputPage.getCurrentPage() - 1);
                         printOutput(outputPage);
                     }
                     break;
