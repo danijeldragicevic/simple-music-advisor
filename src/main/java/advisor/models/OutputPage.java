@@ -3,14 +3,23 @@ package advisor.models;
 import java.util.List;
 
 public class OutputPage {
-    int totalPagesToDisplay;
     int currentPage;
+    int totalPagesToDisplay;
     String nextPageUrl;
     String previousPageUrl;
-    List<Object> items;
+    String resourcePageName;
+    List<Object> pageItems;
 
     public OutputPage() {}
 
+    public String getResourcePageName() {
+        return resourcePageName;
+    }
+
+    public void setResourcePageName(String resourcePageName) {
+        this.resourcePageName = resourcePageName;
+    }
+    
     public int getCurrentPage() {
         return currentPage;
     }
@@ -43,12 +52,12 @@ public class OutputPage {
         this.previousPageUrl = previousPageUrl;
     }
 
-    public List<Object> getItems() {
-        return items;
+    public List<Object> getPageItems() {
+        return pageItems;
     }
 
-    public void setItems(List<Object> items) {
-        this.items = items;
+    public void setPageItems(List<Object> pageItems) {
+        this.pageItems = pageItems;
     }
     
 }
