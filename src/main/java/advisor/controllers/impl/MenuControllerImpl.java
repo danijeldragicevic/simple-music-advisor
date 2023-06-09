@@ -7,7 +7,7 @@ import advisor.services.IAuthService;
 import advisor.services.IPageService;
 import advisor.services.IPlaylistService;
 import advisor.services.impl.AuthServiceImpl;
-import advisor.services.impl.PageService;
+import advisor.services.impl.PageServiceImpl;
 import advisor.services.impl.PlaylistServiceImpl;
 import advisor.utils.InputScanner;
 
@@ -29,7 +29,7 @@ public class MenuControllerImpl implements IMenuController {
     
 
     private static String accessToken;
-    private static OutputPage outputPage;
+    private static OutputPage outputPage = new OutputPage();
 
     @Override
     public void showAuthMenu() {
@@ -59,18 +59,16 @@ public class MenuControllerImpl implements IMenuController {
             String[] choice = InputScanner.getStringInput();
             switch (choice[FIRST_INPUT_VALUE]) {
                 case "new":
-                    pageService = new PageService(ALBUMS.getName());
-                    outputPage = pageService.createPage(accessToken, 
-                            ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.NEW_RELEASES_PATH + "?limit=" + ExternalApiConfig.API_PAGE_LIMIT, 1);
+                    pageService = new PageServiceImpl(ALBUMS.getName());
+                    outputPage = pageService.createPage(accessToken, ExternalApiConfig.NEW_RELEASES_PAGINATED_PATH, outputPage.getCurrentPage());
                     printOutput(outputPage);
                     break;
                 case "featured":
                     showFeaturedPlaylists();
                     break;
                 case "categories":
-                    pageService = new PageService(CATEGORIES.getName());
-                    outputPage = pageService.createPage(accessToken,
-                            ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.CATEGORIES_PATH + "?limit=" + ExternalApiConfig.API_PAGE_LIMIT, 1);
+                    pageService = new PageServiceImpl(CATEGORIES.getName());
+                    outputPage = pageService.createPage(accessToken, ExternalApiConfig.CATEGORIES_PAGINATED_PATH, outputPage.getCurrentPage());
                     printOutput(outputPage);
                     break;
                 case "playlists":

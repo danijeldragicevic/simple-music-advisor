@@ -18,11 +18,11 @@ import java.util.List;
 import static advisor.config.ResourceNames.ALBUMS;
 import static advisor.config.ResourceNames.CATEGORIES;
 
-public class PageService implements IPageService {
-    protected String resourceName;
+public class PageServiceImpl implements IPageService {
     private final IExternalApiRepository repository = new ExternalApiRepositoryImpl();
+    private String resourceName;
     
-    public PageService(String resourceName) {
+    public PageServiceImpl(String resourceName) {
         this.resourceName = resourceName;
     }
 

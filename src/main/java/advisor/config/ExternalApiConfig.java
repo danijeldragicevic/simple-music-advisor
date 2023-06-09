@@ -17,5 +17,8 @@ public final class ExternalApiConfig {
     
     public static int API_PAGE_LIMIT = 5;
     
+    public static final String NEW_RELEASES_PAGINATED_PATH = ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.NEW_RELEASES_PATH + "?limit=" + ExternalApiConfig.API_PAGE_LIMIT;
+    public static final String CATEGORIES_PAGINATED_PATH = ExternalApiConfig.API_SERVER_PATH + ExternalApiConfig.CATEGORIES_PATH + "?limit=" + ExternalApiConfig.API_PAGE_LIMIT;
+    
     private ExternalApiConfig() {}
 }
