@@ -5,8 +5,6 @@ import advisor.models.OutputPage;
 public interface IMenuController {
     void showAuthMenu();
     void showMainMenu();
-    void showCategorizedPlaylists(String cName);
     void printOutput(OutputPage outputPage);
     void exitTheApplication();
-    
 }

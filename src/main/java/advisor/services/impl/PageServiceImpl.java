@@ -56,8 +56,8 @@ public class PageServiceImpl implements IPageService {
     }
 
     @Override
-    public OutputPage crateCnamePage(String cName, String accessToken, String categoriesPath, int currentPage) {
-        OutputPage outputPage = createPage(accessToken, categoriesPath, currentPage);
+    public OutputPage crateCnamePage(String cName, String accessToken, String resourceUrl, int currentPage) {
+        OutputPage outputPage = createPage(accessToken, resourceUrl, currentPage);
         for (Object o: outputPage.getPageItems()) {
             try {
                 String categoryId = ((Category) o).getId();

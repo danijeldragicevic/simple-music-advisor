@@ -25,10 +25,10 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
     }
 
     @Override
-    public String getAuthenticationCode(HttpServer server) {
+    public String getAuthenticationCode(HttpServer httpServer) {
         final String[] authCode = new String[1];
         try {
-            server.createContext("/",
+            httpServer.createContext("/",
                     exchange -> {
                         String query = exchange.getRequestURI().getQuery();
                         String request = "";
@@ -48,7 +48,7 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
             while (authCode[0] == null) {
                 Thread.sleep(10);
             }
-            server.stop(5);
+            httpServer.stop(5);
 
         } catch (InterruptedException e) {
             System.out.println("Server error!");
@@ -75,13 +75,13 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
     }
 
     @Override
-    public String getAccessToken(HttpRequest request) {
+    public String getAccessToken(HttpRequest httpRequest) {
         String accessToken = null;
         System.out.println("Making http request for access_token...");
         System.out.println("response:");
         try {
             HttpClient client = HttpClient.newBuilder().build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
             JsonObject jsonObject = JsonParser.parseString(response.body()).getAsJsonObject();
             accessToken = jsonObject.get("access_token").getAsString();
@@ -108,10 +108,10 @@ public class ExternalApiRepositoryImpl implements IExternalApiRepository {
     }
 
     @Override
-    public String getResource(HttpRequest request) {
+    public String getResource(HttpRequest httpRequest) {
         HttpClient client = HttpClient.newBuilder().build();
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (InterruptedException | IOException e) {
             return "Error response";

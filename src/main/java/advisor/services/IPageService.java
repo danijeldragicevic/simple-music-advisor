@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IPageService {
     OutputPage createPage(String accessToken, String resourceUrl, int currentPage);
-    OutputPage crateCnamePage(String cName, String accessToken, String categoriesPath, int currentPage);
+    OutputPage crateCnamePage(String cName, String accessToken, String resourceUrl, int currentPage);
     
     int calcTotalNumOfPages(JsonObject apiResponseJson, int apiPageLimit);
     String createNextPageUrl(JsonObject apiResponseJson);

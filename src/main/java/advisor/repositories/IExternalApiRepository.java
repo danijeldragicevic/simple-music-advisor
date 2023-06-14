@@ -11,8 +11,8 @@ public interface IExternalApiRepository {
     String getAuthenticationCode(HttpServer httpServer);
     HttpRequest createAuthenticationReq(String authCode);
 
-    String getAccessToken(HttpRequest request);
+    String getAccessToken(HttpRequest httpRequest);
     HttpRequest createAuthorizationReq(String accessToken, String apiPath);
 
-    String getResource(HttpRequest request);
+    String getResource(HttpRequest httpRequest);
 }
