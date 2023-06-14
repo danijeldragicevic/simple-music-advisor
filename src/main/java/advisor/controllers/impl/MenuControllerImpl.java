@@ -14,11 +14,10 @@ import static advisor.config.ResourceNames.*;
 public class MenuControllerImpl implements IMenuController {
     private static final int ZERO = 0;
     private static final int ONE = 1;
+    private static final IAuthService authService = new AuthServiceImpl();
     
-    private static String accessToken;
     private static OutputPage outputPage = new OutputPage();
-    
-    private final IAuthService authService = new AuthServiceImpl();
+    private String accessToken;
     private IPageService pageService;
 
     @Override
@@ -68,7 +67,13 @@ public class MenuControllerImpl implements IMenuController {
                     break;
                 case "playlists":
                     if (choice.length > ONE) {
-                        showCategorizedPlaylists(choice[ONE]);
+                        String cName = choice[ONE];
+                        
+                        pageService = new PageServiceImpl(CATEGORIES.getName());
+                        outputPage.setCurrentPage(ONE);
+                        //outputPage = pageService.createPage(accessToken, ExternalApiConfig.CATEGORIES_PATH, outputPage.getCurrentPage());
+                        outputPage = pageService.crateCnamePage(cName, accessToken, ExternalApiConfig.ALL_CATEGORIES_PATH, outputPage.getCurrentPage());
+                        printOutput(outputPage);
                     } else {
                         System.out.println("Need to add category name also. Please try again.");
                     }

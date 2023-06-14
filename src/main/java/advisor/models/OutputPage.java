@@ -3,7 +3,7 @@ package advisor.models;
 import java.util.List;
 
 public class OutputPage {
-    static int currentPage = 1;
+    static int currentPage;
     int totalPagesToDisplay;
     String nextPageUrl;
     String previousPageUrl;

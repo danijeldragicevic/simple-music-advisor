@@ -1,6 +1,5 @@
 package advisor.services.impl;
 
-import advisor.config.ExternalApiConfig;
 import advisor.models.Album;
 import advisor.models.Category;
 import advisor.models.OutputPage;
@@ -16,6 +15,8 @@ import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static advisor.config.ExternalApiConfig.API_PAGE_LIMIT;
+import static advisor.config.ExternalApiConfig.NAMED_PLAYLISTS_PATH;
 import static advisor.config.ResourceNames.*;
 
 public class PageServiceImpl implements IPageService {
@@ -34,7 +35,7 @@ public class PageServiceImpl implements IPageService {
 
         OutputPage outputPage = new OutputPage();
         outputPage.setCurrentPage(currentPage);
-        outputPage.setTotalPagesToDisplay(calcTotalNumOfPages(apiResponseJson, ExternalApiConfig.API_PAGE_LIMIT));
+        outputPage.setTotalPagesToDisplay(calcTotalNumOfPages(apiResponseJson, API_PAGE_LIMIT));
         outputPage.setNextPageUrl(createNextPageUrl(apiResponseJson));
         outputPage.setPreviousPageUrl(createPreviousPageUrl(apiResponseJson));
         outputPage.setResourcePageName(resourceName);
@@ -53,7 +54,30 @@ public class PageServiceImpl implements IPageService {
         
         return outputPage;
     }
-    
+
+    @Override
+    public OutputPage crateCnamePage(String cName, String accessToken, String categoriesPath, int currentPage) {
+        OutputPage outputPage = createPage(accessToken, categoriesPath, currentPage);
+        for (Object o: outputPage.getPageItems()) {
+            try {
+                String categoryId = ((Category) o).getId();
+                String categoryName = ((Category) o).getName();
+                if (cName.equalsIgnoreCase(categoryName)) {
+                    resourceName = "playlists";
+                    outputPage = createPage(accessToken, NAMED_PLAYLISTS_PATH.replaceAll("category_id", categoryId), currentPage);
+                    break;
+                } else {
+                    outputPage.setPageItems(List.of(new Category("Unknown category name")));
+                }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return outputPage;
+    }
+
     @Override
     public int calcTotalNumOfPages(JsonObject apiResponseJson, int apiPageLimit) {
         int totalRecords = Integer.parseInt(apiResponseJson.getAsJsonObject().get("total").toString().replaceAll("\"", ""));
@@ -98,6 +122,7 @@ public class PageServiceImpl implements IPageService {
         List<Object> items = new ArrayList<>();
         for (JsonElement item: apiResponseJson.getAsJsonArray("items")) {
             Category category = new Category();
+            category.setId(item.getAsJsonObject().get("id").toString().replaceAll("\"", ""));
             category.setName(item.getAsJsonObject().get("name").toString().replaceAll("\"", ""));
             items.add(category);
         }
