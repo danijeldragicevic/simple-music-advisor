@@ -4,6 +4,7 @@ import advisor.config.ExternalApiConfig;
 import advisor.models.Album;
 import advisor.models.Category;
 import advisor.models.OutputPage;
+import advisor.models.Playlist;
 import advisor.repositories.IExternalApiRepository;
 import advisor.repositories.impl.ExternalApiRepositoryImpl;
 import advisor.services.IPageService;
@@ -15,8 +16,7 @@ import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static advisor.config.ResourceNames.ALBUMS;
-import static advisor.config.ResourceNames.CATEGORIES;
+import static advisor.config.ResourceNames.*;
 
 public class PageServiceImpl implements IPageService {
     private final IExternalApiRepository repository = new ExternalApiRepositoryImpl();
@@ -39,12 +39,18 @@ public class PageServiceImpl implements IPageService {
         outputPage.setPreviousPageUrl(createPreviousPageUrl(apiResponseJson));
         outputPage.setResourcePageName(resourceName);
 
+        List<Object> pageItems = new ArrayList<>();
         if (resourceName.equals(ALBUMS.getName())) {
-            outputPage.setPageItems(createAlbumItems(apiResponseJson));
+            pageItems = createAlbumItems(apiResponseJson);
         }
         if (resourceName.equals(CATEGORIES.getName())) {
-            outputPage.setPageItems(createCategoryItems(apiResponseJson));
+            pageItems = createCategoryItems(apiResponseJson);
         }
+        if (resourceName.equals(PLAYLISTS.getName())) {
+            pageItems = createPlaylistItems(apiResponseJson);
+        }
+        outputPage.setPageItems(pageItems);
+        
         return outputPage;
     }
     
@@ -96,6 +102,19 @@ public class PageServiceImpl implements IPageService {
             items.add(category);
         }
 
+        return items;
+    }
+    
+    @Override
+    public List<Object> createPlaylistItems(JsonObject apiResponseJson) {
+        List<Object> items = new ArrayList<>();
+        for (JsonElement item: apiResponseJson.getAsJsonArray("items")) {
+            Playlist playlist = new Playlist();
+            playlist.setName(item.getAsJsonObject().get("name").toString().replaceAll("\"", ""));
+            playlist.setExternalUrl(item.getAsJsonObject().get("external_urls").getAsJsonObject().get("spotify").toString().replaceAll("\"", ""));
+            items.add(playlist);
+        }
+        
         return items;
     }
 }

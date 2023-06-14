@@ -12,4 +12,5 @@ public interface IPageService {
     String createPreviousPageUrl(JsonObject apiResponseJson);
     List<Object> createAlbumItems(JsonObject apiResponseJson);
     List<Object> createCategoryItems(JsonObject apiResponseJson);
+    List<Object> createPlaylistItems(JsonObject apiResponseJson);
 }

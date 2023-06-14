@@ -5,37 +5,27 @@ import advisor.controllers.IMenuController;
 import advisor.models.OutputPage;
 import advisor.services.IAuthService;
 import advisor.services.IPageService;
-import advisor.services.IPlaylistService;
 import advisor.services.impl.AuthServiceImpl;
 import advisor.services.impl.PageServiceImpl;
-import advisor.services.impl.PlaylistServiceImpl;
 import advisor.utils.InputScanner;
 
-import static advisor.config.ResourceNames.ALBUMS;
-import static advisor.config.ResourceNames.CATEGORIES;
+import static advisor.config.ResourceNames.*;
 
 public class MenuControllerImpl implements IMenuController {
-    private static final int FIRST_INPUT_VALUE = 0;
-    private static final int SECOND_INPUT_VALUE = 1;
-    private static final int LENGTH_ONE = 1;
-    private static final int STATUS_ZERO = 0;
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    
+    private static String accessToken;
+    private static OutputPage outputPage = new OutputPage();
     
     private final IAuthService authService = new AuthServiceImpl();
     private IPageService pageService;
-    
-    // Working on this....
-    private final IPlaylistService playlistService = new PlaylistServiceImpl();
-    // Working on this....
-    
-
-    private static String accessToken;
-    private static OutputPage outputPage = new OutputPage();
 
     @Override
     public void showAuthMenu() {
         while (true) {
             String[] choice = InputScanner.getStringInput();
-            switch (choice[FIRST_INPUT_VALUE]) {
+            switch (choice[ZERO]) {
                 case "auth":
                     try {
                         accessToken = authService.getAccessToken();
@@ -57,23 +47,28 @@ public class MenuControllerImpl implements IMenuController {
     public void showMainMenu() {
         while(true) {
             String[] choice = InputScanner.getStringInput();
-            switch (choice[FIRST_INPUT_VALUE]) {
+            switch (choice[ZERO]) {
                 case "new":
                     pageService = new PageServiceImpl(ALBUMS.getName());
-                    outputPage = pageService.createPage(accessToken, ExternalApiConfig.NEW_RELEASES_PAGINATED_PATH, outputPage.getCurrentPage());
+                    outputPage.setCurrentPage(ONE);
+                    outputPage = pageService.createPage(accessToken, ExternalApiConfig.NEW_RELEASES_PATH, outputPage.getCurrentPage());
                     printOutput(outputPage);
                     break;
                 case "featured":
-                    showFeaturedPlaylists();
+                    pageService = new PageServiceImpl(PLAYLISTS.getName());
+                    outputPage.setCurrentPage(ONE);
+                    outputPage = pageService.createPage(accessToken, ExternalApiConfig.FEATURED_PLAYLISTS_PATH, outputPage.getCurrentPage());
+                    printOutput(outputPage);
                     break;
                 case "categories":
                     pageService = new PageServiceImpl(CATEGORIES.getName());
-                    outputPage = pageService.createPage(accessToken, ExternalApiConfig.CATEGORIES_PAGINATED_PATH, outputPage.getCurrentPage());
+                    outputPage.setCurrentPage(ONE);
+                    outputPage = pageService.createPage(accessToken, ExternalApiConfig.CATEGORIES_PATH, outputPage.getCurrentPage());
                     printOutput(outputPage);
                     break;
                 case "playlists":
-                    if (choice.length > LENGTH_ONE) {
-                        showCategorizedPlaylists(choice[SECOND_INPUT_VALUE]);
+                    if (choice.length > ONE) {
+                        showCategorizedPlaylists(choice[ONE]);
                     } else {
                         System.out.println("Need to add category name also. Please try again.");
                     }
@@ -82,7 +77,7 @@ public class MenuControllerImpl implements IMenuController {
                     if (outputPage.getNextPageUrl().equals("null")) {
                         System.out.println("No more pages.");
                     } else {
-                        outputPage = pageService.createPage(accessToken, outputPage.getNextPageUrl(), outputPage.getCurrentPage() + 1);
+                        outputPage = pageService.createPage(accessToken, outputPage.getNextPageUrl(), outputPage.getCurrentPage() + ONE);
                         printOutput(outputPage);
                     }
                     break;
@@ -90,7 +85,7 @@ public class MenuControllerImpl implements IMenuController {
                     if (outputPage.getPreviousPageUrl().equals("null")) {
                         System.out.println("No more pages.");
                     } else {
-                        outputPage = pageService.createPage(accessToken, outputPage.getPreviousPageUrl(), outputPage.getCurrentPage() - 1);
+                        outputPage = pageService.createPage(accessToken, outputPage.getPreviousPageUrl(), outputPage.getCurrentPage() - ONE);
                         printOutput(outputPage);
                     }
                     break;
@@ -102,12 +97,6 @@ public class MenuControllerImpl implements IMenuController {
         }
     }
 
-    @Override
-    public void showFeaturedPlaylists() {
-        playlistService.getPlaylists(accessToken)
-                .forEach(System.out::println);
-    }
-    
     @Override
     public void showCategorizedPlaylists(String cName) {
 //        List<Category> categories = categoryPageService.getCategoriesPage(accessToken);
@@ -128,6 +117,6 @@ public class MenuControllerImpl implements IMenuController {
 
     @Override
     public void exitTheApplication() {
-        System.exit(STATUS_ZERO);
+        System.exit(ZERO);
     }
 }

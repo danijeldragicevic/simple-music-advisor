@@ -2,7 +2,8 @@ package advisor.config;
 
 public enum ResourceNames {
     ALBUMS("albums"),
-    CATEGORIES ("categories");
+    CATEGORIES ("categories"),
+    PLAYLISTS("playlists");
     
     private String name;
 
