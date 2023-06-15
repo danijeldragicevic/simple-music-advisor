@@ -39,7 +39,8 @@ response:
 {"access_token":"BQDLJmcfXvTv2ctGLJuP2FSpkNCplvlBL5JbIb-opBWq2sv8gjUAa2HrNxGhxkILEdgohj34oN1uM1I0wqxA3EyIMstsq1QY4_jAAsY2u-Im5sskm9u-qIA80J2jecP3CuhTWm3G41A6OQab-d0D6o8RmdxvzS4THbOhNy9kh-LmmcvjPxxejuAhxwZzhaXz0DyNSA","token_type":"Bearer","expires_in":3600,"refresh_token":"AQC1PfNZhsTYC-c64xj5WimkTu_CAZgWt2rgDD_KublNL2fcyBgrBpRpn-4_vjjU7mBzJQpozFMPJ9XSKN4hYmiSYi1ZYJkHfPjSoCe7mFJQQCkqb7DrloiDQ6nZDVhb_E0"}
 Success!
 ```
-Screen shot here!!
+![Screenshot 2023-06-15 at 15 58 09](https://github.com/danijeldragicevic/simple-music-advisor/assets/82412662/8840cf89-18e6-4620-8386-627aede68c5b)
+
 
 **Example 2:** Main menu operations <br>
 To show a list of new albums:
